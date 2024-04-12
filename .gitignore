@@ -13,3 +13,6 @@ __pycache__/
 # Ignore Planning folder
 Planning/
 
+# Ignore Exercises folder
+Exercises/
+
