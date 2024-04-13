@@ -1,9 +1,117 @@
 import pandas as pd
+import re
 from constants import *
 
 
 # Read the hotel data from a CSV file, ensuring the 'id' column is treated as string
-df = pd.read_csv(HOTELS_DATA, dtype={'id': 'str'})
+df_hotels = pd.read_csv(HOTELS_DATA, dtype={'id': 'str'})
+# Read the cards data from a CSV file into a pandas DataFrame, treating all columns as strings
+# Convert the DataFrame into a list of dictionaries, The `orient='records'` argument specifies that each row of the DataFrame will be converted into a dictionary with column names as keys and corresponding values as values
+df_cards = pd.read_csv(CARDS_DATA, dtype=str).to_dict(orient='records')
+# Read the cards_security data from a CSV file into a pandas DataFrame, treating all columns as strings
+df_cards_security = pd.read_csv(CARDS_SECURITY_DATA, dtype=str)
+
+
+class UserInput:
+    def input_hotel_id(self):
+        """
+        Prompts the user to input the hotel ID.
+
+        Returns:
+        - str: The hotel ID entered by the user.
+        """
+        while True:
+            hotel_id = input(
+                "\n\n- Enter the hotel ID for booking (3 digits): ")
+            # Validation check using regex to return the hotel id
+            if re.match(HOTEL_ID_PATTERN, hotel_id):
+                return hotel_id
+            else:
+                print("\n-- Error: Please enter a 3-digit hotel ID. --\n")
+
+    def input_full_name(self):
+        """
+        Prompts the user to input their full name.
+
+        Returns:
+        - str: The full name entered by the user.
+        """
+        while True:
+            name = input(
+                "\n\n- Please enter your full name (first_name last_name): ")
+            # Validation check using regex to return the name
+            if re.match(NAME_PATTERN, name):
+                return name
+            else:
+                print(
+                    "\n-- Error: Please enter your full name in the format 'first_name last_name'. --\n")
+
+    def input_credit_card_info(self):
+        """
+        Prompts the user to input credit card information.
+
+        Returns:
+        - dict: A dictionary containing the credit card information entered by the user.
+        """
+        print("\n\n- Enter information for your Card:")
+
+        # Validation checks using regex
+        while True:
+            number = input("\n--> Card Number: ")
+            if re.match(CARD_NUMBER_PATTERN, number):
+                break
+            else:
+                print(
+                    "\n-- Error: Invalid card number. Please enter a 16-digit number. --\n")
+
+        while True:
+            expiration = input("\n--> Expiration Date (MM/YY): ")
+            if re.match(EXPIRATION_PATTERN, expiration):
+                break
+            else:
+                print(
+                    "\n-- Error: Invalid expiration date. Please enter in format MM/YY. --\n")
+
+        while True:
+            cvc = input("\n--> CVC: ")
+            if re.match(CVC_PATTERN, cvc):
+                break
+            else:
+                print("\n-- Error: Invalid CVC. Please enter a 3-digit number. --\n")
+
+        while True:
+            holder = input("\n--> Cardholder Name: ")
+            if re.match(NAME_PATTERN, holder):
+                break
+            else:
+                print(
+                    "\n-- Error: Cardholder name must be in the format 'first_name last_name' and cannot be empty. --\n")
+
+        # If all inputs are valid, return card information
+        card_info = {
+            "number": number,
+            "expiration": expiration,
+            "cvc": cvc,
+            "holder": holder
+        }
+        return card_info
+
+    def input_password(self):
+        """
+        Prompts the user to input their card authentication password.
+
+        Returns:
+        - str: The password entered by the user.
+        """
+        while True:
+            password = input(
+                "\n\n- Enter your card authentication password (minimum 6 characters long): ")
+            # Validation check using regex to return the password
+            if re.match(CARD_AUTH_PATTERN, password):
+                return password
+            else:
+                print(
+                    "\n-- Error: Card authentication password must be 6 characters or longer and cannot be empty. --\n")
 
 
 class Hotel:
@@ -17,8 +125,9 @@ class Hotel:
         """
         self.id = hotel_id
 
-        if hotel_id in df['id'].values:
-            self.name = df.loc[df['id'] == self.id, 'name'].squeeze().title()
+        if hotel_id in df_hotels['id'].values:
+            self.name = df_hotels.loc[df_hotels['id']
+                                      == self.id, 'name'].squeeze().title()
 
     def book(self):
         """
@@ -26,9 +135,9 @@ class Hotel:
 
         """
         # Mark the hotel as unavailable for booking by setting its 'available' column to 'no'
-        df.loc[df['id'] == self.id, 'available'] = 'no'
+        df_hotels.loc[df_hotels['id'] == self.id, 'available'] = 'no'
         # Save the updated DataFrame to a CSV file, excluding the index
-        df.to_csv(HOTELS_DATA, index=False)
+        df_hotels.to_csv(HOTELS_DATA, index=False)
 
     def available(self):
         """
@@ -39,12 +148,13 @@ class Hotel:
         - str or None: Message indicating the availability status or None if the hotel exists.
 
         """
-        if self.id not in df['id'].values:
+        if self.id not in df_hotels['id'].values:
             return False, "-- Hotel with provided ID not found."
         # Filter the DataFrame to get the availability status of the hotel with the given ID
         # Using .loc[] to select rows where 'id' column matches self.id, and 'available' column is selected
         # .squeeze() is used to convert the result to a scalar value (removing extra dimensions)
-        availability = df.loc[df['id'] == self.id, 'available'].squeeze()
+        availability = df_hotels.loc[df_hotels['id']
+                                     == self.id, 'available'].squeeze()
 
         return availability == 'yes', None
 
@@ -80,3 +190,55 @@ Here are your booking data:
 
 """
         return content
+
+
+class CreditCard:
+    def __init__(self, card_number):
+        """
+        Initializes a CreditCard object with the provided card number.
+        """
+        self.number = card_number
+
+    # In this app, we currently validate credit cards using a database which is represented by a CSV file. However, in a production environment, such databases are typically hosted remotely. Our program would access these databases through APIs, enabling it to verify the existence of a card within the database.
+    def validate(self, expiry_date, holder, cvc_number):
+        """
+        Validates the credit card information against a database.
+
+        Parameters:
+        - expiry_date (str): Expiration date of the credit card (format: MM/YY).
+        - holder (str): Name of the cardholder.
+        - cvc_number (str): CVC (Card Verification Code) of the credit card.
+
+        Returns:
+        - bool: True if the credit card is valid, False otherwise.
+        """
+        this_card = {
+            'number': self.number,
+            'expiration': expiry_date,
+            'cvc': cvc_number,
+            'holder': holder,
+        }
+
+        return this_card in df_cards
+
+
+class SecureCreditCard(CreditCard):
+    """
+    A subclass of CreditCard that implements additional security features.
+    """
+
+    def authenticate(self, password_input):
+        """
+        Authenticate the credit card using a password.
+
+        Parameters:
+        - password_input (str): The password input provided by the user.
+
+        Returns:
+        - bool: True if the password input matches the stored password for the card, False otherwise.
+        """
+        # Extract the stored password for the card from the security database
+        this_card_password = df_cards_security.loc[df_cards_security['number']
+                                                   == self.number, 'password'].squeeze()
+        # Compare the provided password input with the stored password for the card
+        return password_input == this_card_password
