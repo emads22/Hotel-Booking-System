@@ -1,4 +1,3 @@
-import pandas as pd
 from app_utils import *
 from constants import *
 
