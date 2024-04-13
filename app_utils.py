@@ -38,7 +38,7 @@ class UserInput:
         """
         while True:
             name = input(
-                "\n\n- Please enter your full name (first_name last_name): ")
+                "\n\n- Enter your full name (first_name last_name): ")
             # Validation check using regex to return the name
             if re.match(NAME_PATTERN, name):
                 return name
@@ -113,6 +113,24 @@ class UserInput:
                 print(
                     "\n-- Error: Card authentication password must be 6 characters or longer and cannot be empty. --\n")
 
+    def input_spa_booking(self):
+        """
+        Prompt the user to book a Spa package.
+
+        Returns:
+        - str: 'yes' if the user wants to book a Spa package, 'no' otherwise.
+        """
+        while True:
+            answer = input(
+                "- Would you like to book a SPA package? (yes/no) ").lower()
+            # Validation check to ensure the input is either 'yes', 'no', 'y', or 'n'
+            if answer in ['y', 'yes']:
+                return True
+            elif answer in ['n', 'no']:
+                return False
+            else:
+                print("\n-- Error: Please enter 'yes'/'y' or 'no'/'n'. --\n")
+
 
 class Hotel:
     def __init__(self, hotel_id):
@@ -159,10 +177,42 @@ class Hotel:
         return availability == 'yes', None
 
 
-class ReservationTicket:
+class SpaHotel(Hotel):
+    """
+    Represents a Spa Hotel, inheriting from the Hotel class.
+
+    This class allows users to book Regular or Premium Spa packages.
+    """
+
+    def book_spa_package(self):
+        """
+        Prompt the user to book a Spa package and set the package type.
+
+        The user is prompted to choose between a Regular package ('r') or a Premium package ('p').
+
+        Returns:
+        - None
+        """
+        while True:
+            package_type = input(
+                "\n--> Choose a Spa package (Regular/Premium): Enter 'r' or 'p': ").lower()
+
+            # Validate the input to set the package type
+            if package_type in ['regular', 'r']:
+                self.spa_package = 'Regular'
+                break
+            elif package_type in ['premium', 'p']:
+                self.spa_package = 'Premium'
+                break
+            else:
+                print(
+                    "\n-- Error: Please enter 'r'/'regular' for Regular package or 'p'/'premium' for Premium package. --\n")
+
+
+class HotelReservationTicket:
     def __init__(self, customer_name, hotel_object):
         """
-        Initializes a ReservationTicket object with the provided customer name and hotel object.
+        Initializes a HotelReservationTicket object with the provided customer name and hotel object.
 
         Parameters:
         - customer_name (str): The name of the customer.
@@ -242,3 +292,37 @@ class SecureCreditCard(CreditCard):
                                                    == self.number, 'password'].squeeze()
         # Compare the provided password input with the stored password for the card
         return password_input == this_card_password
+
+
+class SpaReservationTicket:
+    def __init__(self, customer_name, hotel_object):
+        """
+        Initializes a SpaReservationTicket object with the provided customer name and hotel object.
+
+        Parameters:
+        - customer_name (str): The name of the customer.
+        - hotel_object (Hotel): The Hotel object associated with the reservation.
+
+        """
+        self.customer_name = customer_name.title()
+        self.hotel = hotel_object
+
+    def generate(self):
+        """
+        Generates a reservation ticket with customer and hotel with spa package details.
+
+        Returns:
+        - str: The generated reservation ticket.
+
+        """
+        content = f"""
+Thank you for your SPA reservation!
+
+Here are your SPA booking data:
+
+    - Name: {self.customer_name}
+    - Hotel: {self.hotel.name}
+    - Spa Package: {self.hotel.spa_package}
+
+"""
+        return content
