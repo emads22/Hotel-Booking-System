@@ -1,29 +1,28 @@
-# [Project Name]
+# Hotel Booking System
 
 ## Overview
-[Project Name] is a [brief description of your project]. It [mention key functionalities or purposes].
+Hotel Booking System is a Python application that allows users to book hotels and spa packages. It provides functionalities for hotel reservation, credit card validation, and generating PDF receipts. In this app, credit cards are currently validated using a database represented by a CSV file. However, in a production environment, such databases are typically hosted remotely. The program would access these databases through APIs, enabling it to verify the existence of a card within the database. Additionally, users have the flexibility to customize the data by modifying the custom data files located in the `assets/data` directory, including `hotels.csv`, `cards.csv`, and `card_security.csv`, to suit their preferences. While the application is functional, there is room for improvement in terms of data collection and management, whether it's updating hotel information or enhancing the card validation process.
+
 
 ## Features
-- **[Feature 1]**: [Description of feature 1].
-- **[Feature 2]**: [Description of feature 2].
-- **[Feature 3]**: [Description of feature 3].
-- ...
+- **Hotel Booking**: Users can search for hotels and make reservations.
+- **Spa Package Booking**: Users can book spa packages along with their hotel reservations.
+- **Credit Card Validation**: Credit card information entered by users is validated against a database.
+- **PDF Receipt Generation**: The application generates PDF receipts for hotel and spa reservations.
 
 ## Setup
 1. Clone the repository.
 2. Ensure Python 3.x is installed.
 3. Install the required dependencies using `pip install -r requirements.txt`.
-4. Configure the necessary parameters such as [list of parameters] in `constants.py`.
-   - [Additional setup steps if necessary].
+4. Configure the necessary parameters such as file paths in `constants.py`.
 5. Run the script using `python main.py`.
 
 ## Usage
 1. Run the script using `python main.py`.
-2. [Additional usage instructions if necessary].
-3. [Any other relevant steps or instructions for using the project].
+2. Follow the prompts to book hotels, spa packages, and provide credit card information.
+3. After completing the booking process, the application will generate a PDF receipt in the `assets/receipts` directory.
 
 ## Contributing
-
 Contributions are welcome! Here are some ways you can contribute to the project:
 - Report bugs and issues
 - Suggest new features or improvements
