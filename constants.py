@@ -6,6 +6,7 @@ DATA_DIR = ASSETS_DIR / "data"
 HOTELS_DATA = DATA_DIR / "hotels.csv"
 CARDS_DATA = DATA_DIR / "cards.csv"
 CARDS_SECURITY_DATA = DATA_DIR / "card_security.csv"
+RECEIPT_DIR = ASSETS_DIR / "receipts"
 
 # Validation patterns
 HOTEL_ID_PATTERN = r'^\d{3}$'

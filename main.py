@@ -7,6 +7,8 @@ def app():
     """
     Main function to handle hotel booking application.
     """
+    # Initialize an empty list of tickets
+    tickets = []
     # Create a UserInput object to prompt user for all inputs
     prompt = UserInput()
     # Display the hotel data
@@ -42,6 +44,8 @@ def app():
                     customer_name=name, hotel_object=hotel)
                 # Generate hotel reservation ticket content and display it
                 print("\n\n", hotel_ticket.generate(), "\n")
+                # Append this ticket to the list of tickets so far
+                tickets.append(hotel_ticket)
 
                 # Prompt the user to input yes or no for spa booking package
                 booking_spa_package = prompt.input_spa_booking()
@@ -52,9 +56,15 @@ def app():
                     spa_ticket = SpaReservationTicket(
                         customer_name=name, hotel_object=hotel)
                     print("\n\n", spa_ticket.generate(), "\n")
+                    # Append this ticket to the list of tickets so far
+                    tickets.append(spa_ticket)
                 else:
                     # If no spa booking enter breaklines to display the last message better
                     print("\n\n")
+
+                # Create a receipt object with the tickets collected so far and Generate it to be saved locally
+                receipt = Receipt(tickets=tickets)
+                receipt.generate()
 
             else:
                 # If Credit card is not authenticated Display an error message

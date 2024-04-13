@@ -1,5 +1,7 @@
 import pandas as pd
 import re
+from fpdf import FPDF
+from datetime import datetime
 from constants import *
 
 
@@ -230,7 +232,7 @@ class HotelReservationTicket:
         - str: The generated reservation ticket.
 
         """
-        content = f"""
+        self.content = f"""
 Thank you for your reservation!
 
 Here are your booking data:
@@ -239,7 +241,7 @@ Here are your booking data:
     - Hotel: {self.hotel.name}
 
 """
-        return content
+        return self.content
 
 
 class CreditCard:
@@ -315,7 +317,7 @@ class SpaReservationTicket:
         - str: The generated reservation ticket.
 
         """
-        content = f"""
+        self.content = f"""
 Thank you for your SPA reservation!
 
 Here are your SPA booking data:
@@ -325,4 +327,41 @@ Here are your SPA booking data:
     - Spa Package: {self.hotel.spa_package}
 
 """
-        return content
+        return self.content
+
+
+class Receipt(FPDF):
+    """
+    A class to generate PDF receipts for a list of ticket objects.
+
+    Inherits from FPDF class.
+    """
+
+    def __init__(self, tickets):
+        """
+        Initialize the Receipt object.
+
+        Parameters:
+        - tickets (list): A list of ticket objects to be included in the receipt.
+        """
+        super().__init__(orientation='P', unit='mm', format='A4')
+
+        self.tickets = tickets
+
+        # Generate output path based on current date
+        current_date = datetime.now().strftime("%Y_%m_%d")
+        self.output_path = RECEIPT_DIR / f"receipt_{current_date}.pdf"
+
+    def generate(self):
+        """
+        Generate the PDF receipt.
+
+        Adds a page for each ticket, sets font and style, adds ticket information, and outputs the PDF.
+        """
+        for ticket in self.tickets:
+            self.add_page()
+            self.set_font(family='Times', size=16, style='B')
+            self.multi_cell(w=0, h=8, txt=ticket.content)
+
+        # Output the PDF receipt
+        self.output(self.output_path)
