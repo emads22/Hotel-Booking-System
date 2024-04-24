@@ -16,5 +16,3 @@ CARD_NUMBER_PATTERN = r'^\d{16}$'
 EXPIRATION_PATTERN = r'^\d{2}/\d{2}$'
 CVC_PATTERN = r'^\d{3}$'
 CARD_AUTH_PATTERN = r'^\S{6,}$'  # `\S` matches any non-whitespace character.
-
-
