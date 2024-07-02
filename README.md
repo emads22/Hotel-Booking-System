@@ -13,6 +13,12 @@ While the application is functional, there is room for improvement in terms of d
 - **Credit Card Validation**: Credit card information entered by users is validated against a database.
 - **PDF Receipt Generation**: The application generates PDF receipts for hotel and spa reservations.
 
+## Technologies Used
+- **fpdf**: A library for creating PDF documents.
+- **pandas**: A data manipulation and analysis library.
+- **re**: A module for regular expression operations.
+- **datetime**: A module for manipulating dates and times.
+
 ## Setup
 1. Clone the repository.
 2. Ensure Python 3.x is installed.
