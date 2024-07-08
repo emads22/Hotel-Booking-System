@@ -10,6 +10,8 @@ def app():
     tickets = []
     # Create a UserInput object to prompt user for all inputs
     prompt = UserInput()
+    # Display ASCII art
+    print("\n\n", ASCII_ART, "\n")
     # Display the hotel data
     print("\n", df_hotels, "\n")
 

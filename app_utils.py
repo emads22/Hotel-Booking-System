@@ -360,7 +360,9 @@ class Receipt(FPDF):
         """
         for ticket in self.tickets:
             self.add_page()
-            self.set_font(family='Times', size=16, style='B')
+            # Add image
+            self.image(str(LOGO_FILE), w=30, h=30)
+            self.set_font(family='Courier', size=16, style='B')
             self.multi_cell(w=0, h=8, txt=ticket.content)
 
         # Output the PDF receipt
