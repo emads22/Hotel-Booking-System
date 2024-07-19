@@ -2,17 +2,6 @@
 
 ![Hotel_Booking_System_logo](./assets/images/Hotel_Booking_System_logo.png)
 
-```sh
-
-██╗  ██╗ ██████╗ ████████╗███████╗██╗         ██████╗  ██████╗  ██████╗ ██╗  ██╗██╗███╗   ██╗ ██████╗ 
-██║  ██║██╔═══██╗╚══██╔══╝██╔════╝██║         ██╔══██╗██╔═══██╗██╔═══██╗██║ ██╔╝██║████╗  ██║██╔════╝ 
-███████║██║   ██║   ██║   █████╗  ██║         ██████╔╝██║   ██║██║   ██║█████╔╝ ██║██╔██╗ ██║██║  ███╗
-██╔══██║██║   ██║   ██║   ██╔══╝  ██║         ██╔══██╗██║   ██║██║   ██║██╔═██╗ ██║██║╚██╗██║██║   ██║
-██║  ██║╚██████╔╝   ██║   ███████╗███████╗    ██████╔╝╚██████╔╝╚██████╔╝██║  ██╗██║██║ ╚████║╚██████╔╝
-╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝╚══════╝    ╚═════╝  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
-                                                                                                      
-```
-
 ## Overview
 Hotel Booking System is a Python application designed for booking hotels and spa packages. It offers functionalities for hotel reservation, credit card validation, and generating PDF receipts. Currently, credit cards are validated using a database represented by a CSV file. However, in a production environment, such databases are typically hosted remotely. The program would access these databases through APIs, enabling it to verify the existence of a card within the database.
 
